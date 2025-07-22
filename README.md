@@ -29,12 +29,12 @@ python scanner.py --host <IP_address_or_domain> [options]
 
 Available Options
 
-Argument                Description                                           Example
---host Required. IP address or domain name to scan.                     --host 192.168.1.1
---ports List of ports to scan, e.g., 22,80,443 or a range of 1000-2000. --ports 22,80,443,1000-1010
---popular Scans the 50 most popular ports (does not require --ports).   --popular
---delay Delay between port scans (in seconds). Default is 0.5.          --delay 1
---timeout Timeout for connecting to a port (in seconds). Default is 0.5.--timeout 2
---output Saves scan results to a specified text file.                   --output results.txt
+Argument                                                      
+--host   Required. IP address or domain name to scan.                   
+--ports   List of ports to scan, e.g., 22,80,443 or a range of 1000-2000. 
+--popular   Scans the 50 most popular ports (does not require --ports).  
+--delay   Delay between port scans (in seconds). Default is 0.5.         
+--timeout   Timeout for connecting to a port (in seconds). Default is 0.5.
+--output   Saves scan results to a specified text file.                  
 
 
