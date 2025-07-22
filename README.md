@@ -27,7 +27,6 @@ Run the scanner using the command:
 
 python scanner.py --host <IP_address_or_domain> [options]
 
-Available Options
 
 ## Available Options
 
