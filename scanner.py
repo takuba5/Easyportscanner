@@ -7,9 +7,9 @@ import sys
 class CustomArgumentParser(argparse.ArgumentParser):
     def error(self, message):
         print(f"\nERROR IN USING THE PROGRAM: {message}")
-        print(
-            "Usage: python scanner.py --host <IP_address/domain> --ports <ports>no spaces --delay <delay> --timeout <timeout> --output <filename> ")
+        print(          "Usage: python scanner.py --host <IP_address/domain> --ports <ports>no spaces --delay <delay> --timeout <timeout> --output <filename> ")
         print("For detailed help and description of the program, use: python scanner.py --help")
+        
         sys.exit(2)
 
 
@@ -17,6 +17,7 @@ parser = CustomArgumentParser(description='This program scans the given IP addre
 parser.add_argument('--host',required=True,help='IP address or domain')
 parser.add_argument('--delay', type=float, default=0.5, help='Delay between ports (in seconds)(default 0.5).')
 parser.add_argument('--timeout', type=float, default=0.5, help='Port connection timeout in seconds (default 0.5)')
+
 parser.add_argument('--output',type=str,help='Save the results to a txt file')
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--ports', type=str, help='Ports (e.g. 22,80,443,1000-2000)')
@@ -28,6 +29,7 @@ args = parser.parse_args()
 print("<<Easy network scanner>>")
 print("--------------------------------------------------")
 print("This program scans the specified IP address or domain for")
+
 print("open ports in the specified range. Use arguments")
 print("command line to configure scanning.")
 print("--------------------------------------------------")
@@ -36,6 +38,7 @@ try:
    host = args.host
    ip = socket.gethostbyname(host)
    ipaddress.ip_address(ip)
+    
 except socket.gaierror:
     print(f"ERROR: The hostname '{host}' could not be resolved. Please make sure it is correct.")
     sys.exit(1)
@@ -43,6 +46,7 @@ except ValueError:
     print(f"ERROR: {ip} is not a valid IP address.")
     sys.exit(1)
 except socket.error as e:
+    
    print(f"ERROR: Can't connect to port: {e}")
    sys.exit(1)
 open_ports =[]
@@ -50,6 +54,7 @@ close_ports = 0
 
 
 def save_to_file(filename, host, ip, open_ports, closed_ports, duration_min, duration_sec):
+    
     with open(filename, "w", encoding='utf-8') as file:
         file.write("<< Scan Results >>\n")
         file.write("--------------------------------------------------\n")
@@ -71,8 +76,10 @@ def save_to_file(filename, host, ip, open_ports, closed_ports, duration_min, dur
 
 
 def ports_function():
+    
     if args.popular:
         return sorted([
+            
             20, 21, 22, 23, 25, 53, 67, 68, 69, 80,
             110, 111, 123, 135, 137, 138, 139, 143, 161, 162,
             179, 389, 443, 445, 465, 514, 515, 993, 995, 1080,
@@ -99,9 +106,11 @@ def ports_function():
                 if start < 0 or start > 65535 or end < 0 or end > 65535:
                     print(f"ERROR: Port range '{item}' is not valid (valid range 0-65535).")
                     sys.exit(1)
+                    
                 if start > end:
                     print(f"ERROR: Start port is greater than end port in range '{item}'.")
                     sys.exit(1)
+                    
                 ports_list.extend(range(start, end + 1))
             else:
                 try:
@@ -109,6 +118,7 @@ def ports_function():
                     if port < 0 or port > 65535:
                         print(f"ERROR: {port} is not a valid port number.")
                         sys.exit(1)
+                        
                     ports_list.append(port)
                 except ValueError:
                     print(f"ERROR: Invalid port '{item}'.")
@@ -119,7 +129,9 @@ def ports_function():
 wait_time = args.delay
 ports_list = ports_function()
 ports_list.sort()
+
 start_time = time.time()
+
 print(f"Scanning host {host} ({ip}) for port {ports_list}")
 
 for port in ports_list:
@@ -133,6 +145,7 @@ for port in ports_list:
           print(f"Port {port}: OPEN!")
           open_ports.append(port)
           try:
+              
               banner_bytes = a.recv(1024)
               banner = banner_bytes.decode('utf-8', errors='ignore').strip()
               if banner:
@@ -141,6 +154,7 @@ for port in ports_list:
                   print(f"No immediate banner received for port {port}.")
           except socket.timeout:
 
+              
               print(f"No immediate banner received for port {port} (timeout).")
           except socket.error as e:
 
@@ -153,8 +167,11 @@ for port in ports_list:
 
       else:
           close_ports += 1
+          
           pass
+          
   except socket.error as e:
+      
       print(f"ERROR: Connection to port {port} failed: {e}")
   finally:
       time.sleep(wait_time)
